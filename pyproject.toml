@@ -9,7 +9,7 @@ description = "VISTA visual agent interface for ARC-AGI-3"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.13"
 authors = [
   { name = "Qiushi Han" },
   { name = "Keya Hu" },
@@ -20,6 +20,7 @@ authors = [
 dependencies = [
   "arc-agi==0.9.9",
   "arcengine==0.9.3",
+  "jsonschema>=4.23,<5",
   "numpy==2.5.1",
   "pillow==12.2.0",
   "python-dotenv==1.2.2",
@@ -28,24 +29,34 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+gameworld = [
+  "playwright==1.45.0",
+  "PyYAML>=6.0,<7",
+  "Jinja2>=3.1,<4",
+]
+aigamestore = [
+  "playwright==1.45.0",
+]
+babyvision = [
+  # The official answer extraction uses the `regex` engine's recursive groups.
+  "regex>=2024.11",
+]
 dev = [
-  "pytest>=8.0,<9",
   "ruff==0.16.3",
 ]
 
 [project.scripts]
-vista-codex = "vista_arc3.codex.harness:main"
-vista-claude = "vista_arc3.claude.harness:main"
+vista = "vista.cli:main"
+vista-gameworld = "vista.benchmarks.gameworld.cli:main"
+vista-aigamestore = "vista.benchmarks.aigamestore.cli:main"
+vista-babyvision = "vista.benchmarks.babyvision.cli:main"
 
 [project.urls]
 Homepage = "https://vista-research.github.io/"
 
 [tool.setuptools.package-data]
-vista_arc3 = ["codex/*.md", "claude/*.md"]
-
-[tool.pytest.ini_options]
-pythonpath = ["src"]
-testpaths = ["tests"]
+vista = ["core/prompts/*.md", "benchmarks/arc3/codex/*.md", "benchmarks/arc3/claude/*.md"]
+"vista.benchmarks.aigamestore" = ["public_games.json"]
 
 [tool.ruff]
 target-version = "py312"
@@ -54,12 +65,9 @@ target-version = "py312"
 select = ["E4", "E7", "E9", "F", "I"]
 
 [tool.ruff.lint.per-file-ignores]
-"src/vista_arc3/claude/*.py" = ["I001"]
-"src/vista_arc3/codex/*.py" = ["I001"]
-"src/vista_arc3/shared/*.py" = ["I001"]
-"src/vista_arc3/claude/controller.py" = ["F401"]
-"src/vista_arc3/claude/harness.py" = ["F401"]
-"src/vista_arc3/codex/controller.py" = ["F401"]
+"src/vista/benchmarks/arc3/claude/controller.py" = ["F401"]
+"src/vista/benchmarks/arc3/claude/harness.py" = ["F401"]
+"src/vista/benchmarks/arc3/codex/controller.py" = ["F401"]
 
 [tool.ruff.lint.isort]
 combine-as-imports = true

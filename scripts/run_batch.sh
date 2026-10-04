@@ -255,8 +255,10 @@ check_prerequisites() {
 }
 
 single_game_runs_exist() {
-  ps -eo comm=,args= | awk '
-    $1 ~ /^python([0-9.]*)?$/ && /scripts\/run_arc3_(codex|claude).py/ { found = 1 }
+  # A single game is played through the `vista` selector; match its arguments
+  # rather than a wrapper script's name.
+  ps -eo args= | awk '
+    /(^|[[:space:]\/])vista([[:space:]]|$)/ && /--profile[=[:space:]]+arc3([[:space:]]|$)/ && /--game-id([=[:space:]]|$)/ { found = 1 }
     END { exit !found }
   '
 }

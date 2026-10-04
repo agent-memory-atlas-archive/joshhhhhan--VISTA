@@ -1,28 +1,19 @@
-<h2 align="center">VISTA: A Visual Harness for Reasoning in an Interactive World</h2>
+# VISTA: A Visual Harness for Reasoning in an Interactive World
 
-<p align="center">
-  Qiushi Han* &nbsp;&middot;&nbsp; Keya Hu* &nbsp;&middot;&nbsp; Linlu Qiu* &nbsp;&middot;&nbsp; Cathy Wu &nbsp;&middot;&nbsp; Kaiming He
-  <br>
-  Massachusetts Institute of Technology
-  <br>
-  <sub>* co-leads</sub>
-</p>
+[![arXiv](https://img.shields.io/badge/arXiv-2610.02200-b31b1b.svg)](https://arxiv.org/abs/2610.02200)
+[![Blog](https://img.shields.io/badge/Blog-VISTA-327a62.svg)](https://vista-research.github.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-<p align="center">
-  <a href="https://vista-research.github.io/">Blog post</a>
-</p>
+## Overview
 
-<p align="center">
-  <img src="assets/vista-18-games.gif" alt="VISTA playing ARC-AGI-3 games">
-</p>
+VISTA is a visual harness that lets multimodal models actively reorganize their
+visual input as they reason through long-horizon tasks. It combines visual
+observations, lossless visual memory, and model-directed inspection.
 
-VISTA gives general-purpose multimodal models a continuous visual interface to
-interactive environments. It preserves environment frames as visual memory so
-the agent can revisit original evidence while reasoning and acting over long
-horizons.
+![VISTA playing ARC-AGI-3, GameWorld and AI GameStore games](assets/vista-benchmarks.gif)
 
-With Claude Opus 5.0, VISTA completes all 25 public ARC-AGI-3 games with a 100%
-win rate and a Relative Human Action Efficiency (RHAE) score of 100.
+With Claude Opus 5.0, VISTA achieves a Relative Human Action Efficiency (RHAE)
+score of 100 on the 25 public ARC-AGI-3 games.
 
 Scorecards:
 
@@ -33,57 +24,35 @@ Scorecards:
 
 ## Interface
 
-```text
-observe the current visual
--> reason and use memory as needed
--> execute one game action
--> observe the resulting visual
-```
-
-Every environment frame is archived. The final frame becomes the current
-observation, and earlier final or animation frames remain available through
-visual memory.
-
-Player instructions:
-
-```text
-# Visual game task
-
-Complete the game with as few game actions as possible.
-
-Build and use a compact, revisable model of the game and its current state. Update it as new evidence changes what is supported.
-
-Before each `play`, briefly state what you expect to see. Afterward, briefly state all visible changes, expected or not.
-
-Keep concise, durable, revisable game understanding in `GUIDE.md`; use `WORKING.md` as a scratchpad when useful.
-```
+VISTA preserves visual observations as retrievable memory. Agents can revisit
+earlier observations and inspect selected regions as needed during a task.
 
 Available tools:
 
 - use `play` to execute a game action;
 - use `inspect` to revisit selected visual frames and regions;
-- use `read_pixels` to sample exact colors from selected image regions;
+- use `read_pixels` to read numerical pixel values from selected image regions;
 - use `history` to revisit prior actions and environment results;
 - use `GUIDE.md` and `WORKING.md` for persistent and working memory.
 
 ## Setup
 
-VISTA runs on Linux x86_64 with Python 3.12+, Docker Engine, and either
-Codex CLI 0.145.0 or Claude Code 2.1.220. Online and competition runs require
-an ARC-AGI-3 API key.
+VISTA runs on Linux x86_64 with Python 3.12, Docker Engine, and either
+Codex CLI 0.145.0 or Claude Code 2.1.220. ARC-AGI-3 batch runs also require `tmux`.
+Online and competition ARC-AGI-3 runs require an API key.
 
 From a repository checkout, install the Python package:
 
 ```bash
-python3 -m venv .venv
+python3.12 -m venv .venv
 .venv/bin/python -m pip install --upgrade pip
 .venv/bin/python -m pip install -e .
 cp .env.example .env
 chmod 600 .env
 ```
 
-Sign in to the [ARC Prize platform](https://arcprize.org/platform), create a key
-under your profile's **API Keys**, and add it to `.env`:
+For ARC-AGI-3, sign in to the [ARC Prize platform](https://arcprize.org/platform),
+create a key under your profile's **API Keys**, and add it to `.env`:
 
 ```dotenv
 ARC_API_KEY=your-key
@@ -125,11 +94,14 @@ docker build -t arc3-claude-player:0.1 -f Dockerfile.claude-player .
 
 ## Run
 
+### ARC-AGI-3
+
 Run one game with Codex:
 
 ```bash
-.venv/bin/python scripts/run_arc3_codex.py \
+.venv/bin/vista --profile arc3 --backend codex \
   --game-id s5i5 \
+  --operation-mode online \
   --model gpt-5.6-sol \
   --effort max
 ```
@@ -137,8 +109,9 @@ Run one game with Codex:
 Run one game with Claude:
 
 ```bash
-.venv/bin/python scripts/run_arc3_claude.py \
+.venv/bin/vista --profile arc3 --backend claude \
   --game-id s5i5 \
+  --operation-mode online \
   --model opus \
   --effort xhigh
 ```
@@ -155,15 +128,74 @@ Run all games:
 Available modes are `online` and `competition`. `offline` is also available when
 local game files are supplied through `ENVIRONMENTS_DIR`.
 
+### GameWorld
+
+Prepare the GameWorld environment:
+
+```bash
+./scripts/env_setup/gameworld.sh
+export GAMEWORLD_ROOT="$PWD/local/GameWorld"
+export GAMES_ROOT="$PWD/local/GameWorld-Games"
+
+# One task
+.venv/bin/vista --profile gameworld --backend codex run \
+  --gameworld-root "$GAMEWORLD_ROOT" --games-root "$GAMES_ROOT" \
+  --game 01_2048 --task 01_01 --model gpt-5.6-sol --effort max \
+  --output runs/gameworld-single
+
+# All 170 tasks across 34 games
+./scripts/run_gameworld_batch.sh --backend codex \
+  --model gpt-5.6-sol --effort max -j 2
+```
+
+### AI GameStore
+
+Prepare the AI GameStore environment:
+
+```bash
+./scripts/env_setup/aigamestore.sh
+export AIGAMESTORE_GAMES_ROOT="$PWD/local/aigamestore/games"
+
+# One game
+.venv/bin/vista --profile aigamestore --backend codex run \
+  --games-root "$AIGAMESTORE_GAMES_ROOT" --game 1 \
+  --model gpt-5.6-sol --effort max --output runs/aigamestore-single
+
+# All 10 games
+./scripts/run_aigamestore_batch.sh --backend codex \
+  --model gpt-5.6-sol --effort max -j 2
+```
+
+### BabyVision
+
+BabyVision answers questions about static images using `inspect` and `read_pixels`.
+
+Download the dataset and install its dependencies:
+
+```bash
+./scripts/env_setup/babyvision.sh
+export BABYVISION_ROOT="$PWD/local/BabyVision"
+
+# One question
+.venv/bin/vista --profile babyvision --backend codex run \
+  --task-id 666 --model gpt-5.6-sol --effort max \
+  --output runs/babyvision-single
+
+# The 39 Maze and Connect the Lines questions used in the paper
+./scripts/run_babyvision_batch.sh --backend codex \
+  --model gpt-5.6-sol --effort max -j 2 \
+  --subtypes 'Maze|Connect the lines'
+```
+
 ## Citation
 
 ```bibtex
 @misc{han2026vista,
-  title  = {{VISTA}: A Visual Harness for Reasoning in an Interactive World},
-  author = {Han, Qiushi and Hu, Keya and Qiu, Linlu and Wu, Cathy and He, Kaiming},
-  year   = {2026},
-  month  = aug,
-  note   = {Blog post},
-  url    = {https://vista-research.github.io/}
+  title         = {{VISTA}: A Visual Harness for Reasoning in an Interactive World},
+  author        = {Han, Qiushi and Hu, Keya and Qiu, Linlu and Wu, Cathy and He, Kaiming},
+  year          = {2026},
+  eprint        = {2610.02200},
+  archivePrefix = {arXiv},
+  url           = {https://arxiv.org/abs/2610.02200}
 }
 ```

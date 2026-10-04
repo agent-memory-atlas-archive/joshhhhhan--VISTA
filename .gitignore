@@ -3,6 +3,7 @@
 !.env.example
 .claude/
 .codex/
+.venv
 .venv/
 __pycache__/
 *.py[cod]
@@ -14,6 +15,7 @@ dist/
 
 # VISTA run artifacts. These can include raw grids, model transcripts,
 # scorecard ids, and local Codex session state.
+runs
 runs/
 run_logs/
 recordings/
@@ -22,3 +24,7 @@ experiments/
 
 # Local editor/system files.
 .DS_Store
+
+# Benchmark checkouts made by scripts/env_setup/.
+local
+local/

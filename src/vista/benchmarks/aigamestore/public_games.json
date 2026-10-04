@@ -1,0 +1,87 @@
+{
+  "source": "https://aigamestore.org",
+  "read_on": "2026-09-10",
+  "note": "The ten public games' own text and the site's published human median, which a score is normalised against. Read once from the site's public manifest and score endpoints; the games themselves come from the harness repository.",
+  "games": [
+    {
+      "number": 1,
+      "game_id": "games/game1",
+      "original_name": "aqua-sort-puzzle",
+      "description": "Sort colored liquids into tubes so each contains only one color. Pour between tubes strategically to complete all levels.",
+      "controls": "- Arrow Left/Right: Navigate tubes\n- Space: Select tube to pour\n- Z: Undo last move\n- Enter: Start game\n- R: Restart",
+      "human_median": 465.0
+    },
+    {
+      "number": 2,
+      "game_id": "games/game2",
+      "original_name": "fling-feathers-blitz",
+      "description": "Physics-based puzzle game. Launch birds from a slingshot to destroy structures and eliminate pigs. Each bird type has unique abilities.",
+      "controls": "- Arrow Keys: Adjust aim\n- Space: Launch bird\n- Z: Activate special ability\n- Enter: Start game\n- R: Restart",
+      "human_median": 7155.0
+    },
+    {
+      "number": 3,
+      "game_id": "games/game3",
+      "original_name": "red-hot-vengeance-web-edition",
+      "description": "Top-down tactical shooter. Navigate procedural levels, use cover, manage ammo, and eliminate all enemies to progress.",
+      "controls": "- WASD: Move\n- Arrow Keys: Shoot direction\n- Space: Dash/Dodge roll\n- Z: Swap weapon\n- Shift: Walk slowly\n- Enter: Start game\n- Esc: Pause\n- R: Restart",
+      "human_median": 2100.0
+    },
+    {
+      "number": 4,
+      "game_id": "games/game4",
+      "original_name": "jetpack-joyride-clone",
+      "description": "Fly through an endless lab with your bullet-powered jetpack. Dodge zappers, missiles, and lasers while collecting coins.",
+      "controls": "- Space/Arrow Up: Activate Jetpack (Fly Up)\n- ESC: Pause/Unpause\n- Enter: Start Game\n- R: Restart\n- Z: Activate special ability",
+      "human_median": 1342.0
+    },
+    {
+      "number": 5,
+      "game_id": "games/game5",
+      "original_name": "cheese-chase-mouse-escape",
+      "description": "Collect all cheese to unlock the exit. Avoid patrolling cats and complete all levels to win.",
+      "controls": "- Arrow Left/Right: Move\n- Arrow Up: Jump\n- Enter: Start game\n- Esc: Pause\n- R: Restart",
+      "human_median": 7925.0
+    },
+    {
+      "number": 6,
+      "game_id": "games/game6",
+      "original_name": "shadow-boy",
+      "description": "Guide a boy through a dark, puzzle-filled world. Overcome traps and platforming challenges to reach the final checkpoint.",
+      "controls": "- Arrow Left/Right: Move\n- Arrow Up/Space: Jump\n- Z: Interact with objects\n- Enter: Start game\n- R: Restart",
+      "human_median": 300.0
+    },
+    {
+      "number": 7,
+      "game_id": "games/game7",
+      "original_name": "battle-zone",
+      "description": "Top-down tactical shooter. Eliminate enemies, collect ammo, and use cover strategically. Manage health and ammunition to reach extraction.",
+      "controls": "- Arrow Keys: Move\n- Z: Fire weapon\n- Space: Sprint\n- Shift: Take cover/crouch\n- Enter: Start game\n- Esc: Pause\n- R: Restart",
+      "human_median": 5950.0
+    },
+    {
+      "number": 8,
+      "game_id": "games/game8",
+      "original_name": "bubble-cash",
+      "description": "Match 3 or more bubbles of the same color to pop them. Create chain reactions for bonus points. Clear all bubbles before time runs out.",
+      "controls": "- Arrow Left/Right: Rotate shooter\n- Space: Fire bubble\n- Z: Swap current bubble with next\n- Enter: Start game\n- R: Restart",
+      "human_median": 6695.0
+    },
+    {
+      "number": 9,
+      "game_id": "games/game9",
+      "original_name": "megaman",
+      "description": "Action platformer with boss battles. Defeat bosses to gain their weapons, master tight platforming, and conquer the final fortress.",
+      "controls": "- Arrow Left/Right: Move\n- Arrow Up/Down: Aim up/down\n- Z: Jump\n- Space: Shoot\n- Shift: Cycle weapons\n- Enter: Start game\n- Esc: Pause\n- R: Restart",
+      "human_median": 4400.0
+    },
+    {
+      "number": 10,
+      "game_id": "games/game10",
+      "original_name": "ao-oni-the-mansions-shadow",
+      "description": "Escape a haunted mansion while evading a terrifying monster. Navigate 6 levels, find keys, solve puzzles, and hide to survive.",
+      "controls": "- Arrow Keys: Move\n- Shift: Toggle sprint\n- Space: Interact with doors, items, hiding spots\n- Z: Toggle flashlight\n- Enter: Start game\n- Esc: Pause\n- R: Restart",
+      "human_median": 1160.0
+    }
+  ]
+}
